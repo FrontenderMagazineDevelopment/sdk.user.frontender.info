@@ -2,7 +2,7 @@
   "name": "@frontender-magazine/fm-user",
   "version": "1.0.3",
   "description": "SDK for user service api",
-  "main": "index.js",
+  "main": "lib/index.js",
   "scripts": {
     "release": "npm version patch && git push && git push --tags && npm publish --access public",
     "clean": "rimraf public lib",
@@ -24,8 +24,7 @@
     "*.{jsx,js}": [
       "npm run format",
       "eslint --color -f stylish --fix",
-      "git add . -A",
-      "jest --bail --findRelatedTests"
+      "git add . -A"
     ]
   },
   "repository": {

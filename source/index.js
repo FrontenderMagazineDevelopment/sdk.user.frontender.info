@@ -32,7 +32,7 @@ export default class UserService extends TMMicroServiceAPI {
    *
    * @example <caption>Read users list</caption>
    * (async () => {
-   *   const User = new UserService('https://user.frontender.info/');
+   *   const User = new UserService('https://user.frontender.info/', '8237612jh3g12jh32j13h');
    *   const list = await User.get();
    * })();
    */
