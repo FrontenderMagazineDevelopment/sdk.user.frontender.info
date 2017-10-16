@@ -1,6 +1,6 @@
 {
   "name": "@frontender-magazine/fm-user",
-  "version": "1.0.1",
+  "version": "1.0.0",
   "description": "SDK for user service api",
   "main": "index.js",
   "scripts": {
@@ -24,7 +24,8 @@
     "*.{jsx,js}": [
       "npm run format",
       "eslint --color -f stylish --fix",
-      "git add . -A"
+      "git add . -A",
+      "jest --bail --findRelatedTests"
     ]
   },
   "repository": {
