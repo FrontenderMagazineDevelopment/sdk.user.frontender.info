@@ -56,15 +56,17 @@ export default class UserService extends TMMicroServiceAPI {
    * @public
    * @memberof UserService
    *
-   * @param {string} title - post title
-   * @param {string} body - post body
+   * @param {User} - user object
    * @return {User} - created user
    * @throw {ErrorServerResponse} - server response with error status
    *
    * @example <caption>Create user</caption>
    * (async () => {
    *   const User = new UserService('https://frontender.info/');
-   *   const details = await User.post({});
+   *   const details = await User.post({
+   *    "name": "Arthur Schopenhauer",
+   *    "twitter":"https://twitter.com/ArtSchopenhauer"
+   *   });
    * })();
    */
   post = async user => {
@@ -81,6 +83,88 @@ export default class UserService extends TMMicroServiceAPI {
       const json = await response.json();
       return json;
     }
+    throw new ErrorServerResponse(response.status, response.statusText);
+  };
+
+  /**
+   * Replace user
+   *
+   * @method put
+   * @async
+   * @public
+   * @memberof UserService
+   *
+   * @param {User} - updated user object with _id included
+   * @return {User} - created user
+   * @throw {ErrorNotFound} - user with this id not found
+   * @throw {ErrorServerResponse} - server response with error status
+   *
+   * @example <caption>Replace user</caption>
+   * (async () => {
+   *   const User = new UserService('https://frontender.info/');
+   *   const details = await User.put({
+   *    "name": "Arty Schopy",
+   *    "twitter": "https://twitter.com/ArtSchopenhauer",
+   *    "blog": "https://plato.stanford.edu/entries/schopenhauer/",
+   *    "_id": "59e11e3bbce79c073e548a9a"
+   *   });
+   * })();
+   */
+  put = async user => {
+    const options = {
+      method: 'PUT',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(user),
+    };
+    const response = await super.request(`${this.url}${user._id}`, options);
+    if (response.ok) {
+      const json = await response.json();
+      return json;
+    }
+    if (response.status === 404) throw new ErrorNotFound(UserService.messages.userNotFound);
+    throw new ErrorServerResponse(response.status, response.statusText);
+  };
+
+  /**
+   * Update user
+   *
+   * @method patch
+   * @async
+   * @public
+   * @memberof UserService
+   *
+   * @param {User} - updated user object with _id included
+   * @return {User} - updated user
+   * @throw {ErrorNotFound} - user with this id not found
+   * @throw {ErrorServerResponse} - server response with error status
+   *
+   * @example <caption>Patch user</caption>
+   * (async () => {
+   *   const User = new UserService('https://frontender.info/');
+   *   const details = await User.patch({
+   *    "_id": "59e11e3bbce79c073e548a9a",
+   *    "twitter": "https://twitter.com/ZZTop"
+   *   });
+   * })();
+   */
+  patch = async user => {
+    const options = {
+      method: 'PATCH',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(user),
+    };
+    const response = await super.request(`${this.url}${user._id}`, options);
+    if (response.ok) {
+      const json = await response.json();
+      return json;
+    }
+    if (response.status === 404) throw new ErrorNotFound(UserService.messages.userNotFound);
     throw new ErrorServerResponse(response.status, response.statusText);
   };
 
@@ -124,7 +208,7 @@ export default class UserService extends TMMicroServiceAPI {
    * @async
    * @public
    *
-   * @param {number} id - user id
+   * @param {string} id - user id
    * @return {User} - user details
    * @throw {ErrorNotFound} - user with this id not found
    * @throw {ErrorServerResponse} - server response with other error status
