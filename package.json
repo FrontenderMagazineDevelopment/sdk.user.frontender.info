@@ -1,6 +1,6 @@
 {
   "name": "@frontender-magazine/fm-user",
-  "version": "1.0.5",
+  "version": "1.0.6",
   "description": "SDK for user service api",
   "main": "lib/index.js",
   "scripts": {
