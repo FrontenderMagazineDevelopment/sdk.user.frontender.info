@@ -74,4 +74,34 @@ describe('User API', () => {
       expect(error.statusCode).toEqual(500);
     }
   });
+
+    it('should create user', async () => {
+        const answer = {
+            name: 'John Doe',
+            twitter: 'https://twitter.com/JohnDoe',
+        };
+
+        nock(/[.]+/)
+            .post('/')
+            .reply(200, answer);
+
+        const user = new UserService(serviceUrl);
+        const response = await user.post(answer);
+        expect(response).toEqual(answer);
+    });
+
+    it('should throw error if you request post delete user with not found id user', async () => {
+        nock(/[.]+/)
+            .get('/')
+            .reply(404);
+
+        const user = new UserService(serviceUrl);
+
+        try {
+            await user.delete('59e11e3bbce79c073e548a9a');
+        } catch (error) {
+            expect(error.statusCode).toEqual(404);
+            expect(error.statusText).toEqual('Not Found');
+        }
+    });
 });
